@@ -1,12 +1,24 @@
 <template>
-  <el-scrollbar
-    ref="scrollContainer"
-    :vertical="false"
-    class="scroll-container"
-    @wheel.native.prevent="handleScroll"
-  >
-    <slot />
-  </el-scrollbar>
+  <div class="tags-box">
+    <el-button
+      class="scroll-arrow"
+      icon="el-icon-arrow-left"
+      @click="handleArrow(-80)"
+    />
+    <el-scrollbar
+      ref="scrollContainer"
+      :vertical="false"
+      class="scroll-container"
+      @wheel.native.prevent="handleScroll"
+    >
+      <slot />
+    </el-scrollbar>
+    <el-button
+      class="scroll-arrow"
+      icon="el-icon-arrow-right"
+      @click="handleArrow(80)"
+    />
+  </div>
 </template>
 
 <script lang="ts">
@@ -23,6 +35,12 @@ export default class extends Vue {
     const scrollContainer = this.$refs.scrollContainer as Vue
     const scrollWrapper = scrollContainer.$refs.wrap as HTMLElement
     scrollWrapper.scrollLeft = scrollWrapper.scrollLeft + eventDelta / 4
+  }
+
+  private handleArrow(eventDelta: number) {
+    const scrollContainer = this.$refs.scrollContainer as Vue
+    const scrollWrapper = scrollContainer.$refs.wrap as HTMLElement
+    scrollWrapper.scrollLeft = scrollWrapper.scrollLeft + eventDelta
   }
 
   public moveToTarget(currentTag: HTMLElement) {
@@ -83,5 +101,17 @@ export default class extends Vue {
   position: relative;
   overflow: hidden;
   width: 100%;
+}
+.tags-box {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+.scroll-arrow {
+  width: 30px;
+  height: 30px;
+  margin: 2px 2px;
+  padding: 1px 1px;
+
 }
 </style>
